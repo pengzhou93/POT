@@ -25,8 +25,6 @@ int EMD_wrap(int n1, int n2, double *X, double *Y, double *D, double *G,
 
   // Get the number of non zero coordinates for r and c
     n=0;
-    std::cerr << "**" << n1 << "==" << std::endl;
-
     for (int i=0; i<n1; i++) {
         double val=*(X+i);
         if (val>0) {
