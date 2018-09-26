@@ -80,6 +80,35 @@ then
         python $file
     fi
 
+elif [ "$1" = "notebooks/plot_otda_mapping.ipynb" ]
+then
+    # ./run.sh "notebooks/plot_otda_mapping.ipynb" debug
+    # ./run.sh "notebooks/plot_otda_mapping.ipynb" jupyter
+
+    file="plot_otda_mapping.py"
+    line=22
+    if [ $2 = debug ]
+    then
+        # rebuild_cython
+        cd notebooks
+        insert_debug_string "$file" $line "$debug_str"
+        python "$file"
+        delete_debug_string "$file" $line "$debug_str"
+    elif [ $2 = debug-cpp ]
+    then
+        rebuild_cython
+        cd notebooks
+#        gdbserver localhost:8080 python $file
+
+    elif [ $2 = jupyter ]
+    then
+        jupyter notebook --browser google-chrome
+
+    else
+        cd notebooks
+        python $file
+    fi
+
 else
     echo NoParameter
 fi
