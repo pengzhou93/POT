@@ -71,11 +71,14 @@ def test_sinkhorn_variants():
     Ges = ot.sinkhorn(
         u, u, M, 1, method='sinkhorn_epsilon_scaling', stopThr=1e-10)
     Gerr = ot.sinkhorn(u, u, M, 1, method='do_not_exists', stopThr=1e-10)
+    G_green = ot.sinkhorn(u, u, M, 1, method='greenkhorn', stopThr=1e-10)
 
     # check values
     np.testing.assert_allclose(G0, Gs, atol=1e-05)
     np.testing.assert_allclose(G0, Ges, atol=1e-05)
     np.testing.assert_allclose(G0, Gerr)
+    np.testing.assert_allclose(G0, G_green, atol=1e-5)
+    print(G0, G_green)
 
 
 def test_bary():
@@ -103,6 +106,30 @@ def test_bary():
     np.testing.assert_allclose(1, np.sum(bary_wass))
 
     ot.bregman.barycenter(A, M, reg, log=True, verbose=True)
+
+
+def test_wassersteinbary():
+
+    size = 100  # size of a square image
+    a1 = np.random.randn(size, size)
+    a1 += a1.min()
+    a1 = a1 / np.sum(a1)
+    a2 = np.random.randn(size, size)
+    a2 += a2.min()
+    a2 = a2 / np.sum(a2)
+    # creating matrix A containing all distributions
+    A = np.zeros((2, 100, 100))
+    A[0, :, :] = a1
+    A[1, :, :] = a2
+
+    # wasserstein
+    reg = 1e-3
+    bary_wass = ot.bregman.convolutional_barycenter2d(A, reg)
+
+    np.testing.assert_allclose(1, np.sum(bary_wass))
+
+    # help in checking if log and verbose do not bug the function
+    ot.bregman.convolutional_barycenter2d(A, reg, log=True, verbose=True)
 
 
 def test_unmix():
