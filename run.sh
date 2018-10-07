@@ -43,8 +43,8 @@ rebuild_cython()
 }
 
 # python3.6 tf_1_6
-source $HOME/anaconda3/bin/activate tf_1_6
-export LD_LIBRARY_PATH=/usr/local/cudnn-9.0-v7.1/lib64:/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH
+# source $HOME/anaconda3/bin/activate tf_1_6
+# export LD_LIBRARY_PATH=/usr/local/cudnn-9.0-v7.1/lib64:/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH
 
 if [ "$1" = build ]
 then
